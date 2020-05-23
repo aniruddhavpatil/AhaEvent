@@ -2,6 +2,7 @@ import React, {
   Component,
 } from 'react';
 
+import DocumentMeta from 'Components/DocumentMeta';
 import Grid from 'Components/Grid';
 import Card from 'Components/Card';
 import Loader from 'Components/Loader';
@@ -23,6 +24,9 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      meta: {
+        title: 'Home',
+      },
       events: [],
       isLoading: true,
     };
@@ -31,9 +35,8 @@ class Home extends Component {
   componentDidMount() {
     const { location: { search } } = this.props;
     const searchParams = getSearchParams(search);
-
     const self = this;
-    getOrderedEventsList()
+    getOrderedEventsList(searchParams)
       .then((eventList) => {
         self.setState({
           events: eventList,
@@ -111,9 +114,10 @@ class Home extends Component {
   }
 
   render() {
-    const { isLoading } = this.state;
+    const { isLoading, meta } = this.state;
     return (
       <main>
+        <DocumentMeta {...meta} />
         {isLoading && <Loader />}
         {!isLoading && (this.getPageContent())}
       </main>
