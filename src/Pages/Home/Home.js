@@ -8,13 +8,11 @@ import Card from 'Components/Card';
 import Loader from 'Components/Loader';
 import Icon from 'Components/Icon';
 import {
-  getSampleEvents, getOrderedEventsList,
+  getOrderedEventsList,
 } from 'Services/Firestore';
 import Utils, {
-  generateEventUrl,
-  convertDateRangeToReadable,
+  generateCardData,
 } from 'Utils';
-import config from 'Config/Config';
 
 import styles from './Home.module.scss';
 
@@ -54,53 +52,13 @@ class Home extends Component {
   getPageContent() {
     const { events } = this.state;
     if (events.length > 0) {
-      const eventsData = events.map((e, i) => {
-        const {
-          id,
-          name: title,
-          logo,
-          link,
-          cover,
-          coverBgColor,
-          location,
-          startDate,
-          endDate,
-          cfpStartDate,
-          cfpEndDate,
-        } = e;
-
-        const subTitle = (
-          <>
-            <Icon type="location" className={styles.icon} />
-            <span>{location}</span>
-          </>
-        );
-        const hasCfp = cfpStartDate && cfpEndDate;
-        const description = (
-          <>
-            <div>{convertDateRangeToReadable(startDate, endDate)}</div>
-            {hasCfp && (
-            <div>
-              CFP:
-              {convertDateRangeToReadable(cfpStartDate, cfpEndDate)}
-            </div>
-            )}
-          </>
-        );
-        const url = generateEventUrl(id, title);
-
-        return {
-          id,
-          title,
-          subTitle,
-          description,
-          logo,
-          link,
-          url,
-          cover,
-          coverBgColor,
+      const eventsData = events.map((event) => {
+        const eData = generateCardData(event);
+        const {url} = eData;
+        return ({
+          ...eData,
           onClick: (e) => this.handleCardClick(e, url),
-        };
+        });
       });
       return (
         <Grid

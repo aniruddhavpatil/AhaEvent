@@ -4,8 +4,8 @@ import {
 } from 'react-router-dom';
 import 'antd/dist/antd.less';
 
-import Config from 'Config';
-import History from 'Config/History';
+import history from 'Config/History';
+import Analytics from 'Components/Analytics';
 import Header from 'Components/Header';
 import BackTop from 'Components/BackTop';
 import Footer from 'Components/Footer';
@@ -16,6 +16,8 @@ import {
 } from 'Utils';
 
 import './App.scss';
+
+Analytics();
 
 const {
   Home,
@@ -51,6 +53,6 @@ const Routes = () => (
   </>
 );
 
-const App = () => (<Router history={History}><Routes /></Router>);
+const App = () => (<Router history={history}><Routes /></Router>);
 
 export default App;
